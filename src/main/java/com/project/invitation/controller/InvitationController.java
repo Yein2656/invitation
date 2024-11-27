@@ -13,4 +13,10 @@ public class InvitationController {
         return "invitation";
     }
 
+    @GetMapping("gallery")
+    public String gallery(Model model) {
+        model.addAttribute("data","hello");
+        return "gallery";
+    }
+
 }

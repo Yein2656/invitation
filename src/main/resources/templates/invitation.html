@@ -6,38 +6,87 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1.0" />
 
   <meta property="og:title" content="초청장" />
-  <meta property="og:url" content="http://52.78.188.137/invitation" />
+  <meta property="og:url" content="http://heejeon.site:8080/invitation" />
   <meta property="og:type" content="website" />
   <meta property="og:description" content="송년의 밤 여러분을 초대합니다." />
-  <meta property="og:image" content="http://52.78.188.137/img/top.jpg" />
-
+  <meta property="og:image" content="http://heejeon.site:8080/img/top_sum.png" />
 
   <title>송년의 밤</title>
-
-  <link rel="stylesheet" href="/css/denod.css" />
+  <link rel="stylesheet" href="/css/main.css" />
   <link rel="stylesheet" href="/css/animate.min.css">
   <link rel="stylesheet" href="/css/swipebox.css">
   <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
   <script src="/js/jquery.swipebox.js"></script>
   <script type="text/javascript">;( function( $ ) {$( '.swipebox' ).swipebox();} )( jQuery );</script>
+  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+  <script type="text/javascript">
+    //<![CDATA[
+    // // 사용할 앱의 JavaScript 키를 설정해 주세요.
+    Kakao.init('a03078957efb1a40a19efe081f1d413f');
+    // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+    function shareKakao() {
+      Kakao.Share.sendScrap({
+        requestUrl: 'http://heejeon.site:8080/invitation',
+        templateId : 114697
+      });
+    }
+    //]]>
+
+    //  클립보드 복사하기
+    function clipboardShare() {
+      // 1. 새로운 element 생성
+      var tmpTextarea = document.createElement('textarea');
+
+      // 2. 해당 element에 복사하고자 하는 value 저장
+      tmpTextarea.value = "http://heejeon.site:8080/invitation";
+
+      // 3. 해당 element를 화면에 안보이는 곳에 위치
+      tmpTextarea.setAttribute('readonly', '');
+      tmpTextarea.style.position = 'absolute';
+      tmpTextarea.style.left = '-9999px';
+      document.body.appendChild(tmpTextarea);
+
+      // 4. 해당 element의 value를 시스템 함수를 호출하여 복사
+      tmpTextarea.select();
+      tmpTextarea.setSelectionRange(0, 9999);  // 셀렉트 범위 설정
+      var successChk = document.execCommand('copy');
+
+      // 5. 해당 element 삭제
+      document.body.removeChild(tmpTextarea);
+
+      // 클립보드 성공여부 확인
+      if(!successChk){
+        alert("클립보드 복사에 실패하였습니다.");
+      } else {
+        alert("클립보드에 복사가 완료되었습니다.");
+      }
+    }
+  </script>
 </head>
 
 
 <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
-<div id="container">
-  <div style="background: #ffffff">
+<div id="container" style="background: #151426">
+  <div>
     <img class="top" src="/img/top.png" />
   </div>
+
+  <img class="align" src="/img/program.png">
 
   <div class="gallery swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide"><img src="/img/gallery/01.jpg"/></div>
-      <div class="swiper-slide"><img src="/img/gallery/02.jpg"/></div>
-      <div class="swiper-slide"><img src="/img/gallery/03.jpg"/></div>
+      <div class="swiper-slide"><img src="/img/gallery/04.jpg"/></div>
+      <div class="swiper-slide"><img src="/img/gallery/05.jpg"/></div>
     </div>
     <div class="swiper-pagination"></div>
-  </div>
+    <div style="text-align: right; margin: 20px;">
+      <a href="/gallery" style="color: white; ">
+        <span> > 사진 더보기</span>
+      </a>
+    </div>
+
   <link rel="stylesheet" type="text/css" href="/css/swiper.min.css">
   <script src="/js/swiper.min.js"></script>
   <script>
@@ -52,9 +101,55 @@
       },
     });
   </script>
+  </div>
 
-  <img class="align" src="/img/program.png">
 
+  <img class="align" src="/img/location1.png">
+  <div id="map" style="width:100%;height:350px;"></div>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a03078957efb1a40a19efe081f1d413f"></script>
+  <script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+              center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+              level: 3 // 지도의 확대 레벨
+            };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    var marker = new kakao.maps.Marker();
+
+    // 타일 로드가 완료되면 지도 중심에 마커를 표시합니다
+    kakao.maps.event.addListener(map, 'tilesloaded', displayMarker);
+
+    function displayMarker() {
+
+      // 마커의 위치를 지도중심으로 설정합니다
+      marker.setPosition(map.getCenter());
+      marker.setMap(map);
+
+      // 아래 코드는 최초 한번만 타일로드 이벤트가 발생했을 때 어떤 처리를 하고
+      // 지도에 등록된 타일로드 이벤트를 제거하는 코드입니다
+      // kakao.maps.event.removeListener(map, 'tilesloaded', displayMarker);
+    }
+  </script>
+  <img class="align" src="/img/location2.png">
+
+
+  <!-- html -->
+  <div class="btn_box" style="text-align: center;padding: 20px;background-color: white">
+    <div>
+      <a href="javascript:shareKakao()">
+        <img src="/img/kakao_sh.jpg" alt="카카오톡 공유">
+        <span class="cssFontTest">카카오톡 공유하기</span>
+      </a>
+    </div>
+    <div>
+      <a id="clip-btn" href="javascript:clipboardShare()">
+        <img src="/img/copy_link.png"/>
+        <span class="cssFontTest">링크주소 복사하기</span>
+      </a>
+    </div>
+  </div>
 </div>
 
 </body>
